@@ -3,10 +3,7 @@ package jdbctests;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DynamicList {
 
@@ -18,7 +15,7 @@ public class DynamicList {
     public void test1() throws SQLException {
         Connection connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select first_name,last_name,salary,Job_id from employees");
+        ResultSet resultSet = statement.executeQuery("select first_name,last_name,salary,Job_id from employees where rownum<6");
 
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
 
@@ -27,12 +24,13 @@ public class DynamicList {
         int colCount= resultSetMetaData.getColumnCount();
 
         while(resultSet.next()){
-            Map<String,Object> row = new HashMap<>();
+            Map<String,Object> row = new LinkedHashMap<>();
             for (int i=1;i<=colCount;i++){
                 row.put(resultSetMetaData.getColumnName(i),resultSet.getObject(i));
             }
             queryData.add(row);
         }
+
         //Printing..
         for(Map<String,Object> row : queryData)
             System.out.println(row.toString());

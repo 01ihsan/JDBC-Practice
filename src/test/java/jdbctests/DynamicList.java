@@ -27,8 +27,16 @@ public class DynamicList {
         int colCount= resultSetMetaData.getColumnCount();
 
         while(resultSet.next()){
-
+            Map<String,Object> row = new HashMap<>();
+            for (int i=1;i<=colCount;i++){
+                row.put(resultSetMetaData.getColumnName(i),resultSet.getObject(i));
+            }
+            queryData.add(row);
         }
+        //Printing..
+        for(Map<String,Object> row : queryData)
+            System.out.println(row.toString());
+
         //close connection...
         resultSet.close();
         statement.close();

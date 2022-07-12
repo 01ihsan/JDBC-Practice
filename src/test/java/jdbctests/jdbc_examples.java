@@ -32,12 +32,14 @@ public class jdbc_examples {
         Connection connection= DriverManager.getConnection(dbUrl,dbUsername,dbPassword);
         Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY); //move freely and read only
         ResultSet resultSet = statement.executeQuery("select * from departments");
-        DatabaseMetaData dbMetadata = connection.getMetaData();
-        System.out.println(dbMetadata.getUserName());
-        System.out.println(dbMetadata.getDatabaseProductName());
-        System.out.println(dbMetadata.getDatabaseProductVersion());
-        System.out.println(dbMetadata.getDriverName());
-        System.out.println(dbMetadata.getDriverVersion());
+        resultSet.last();
+        System.out.println(resultSet.getRow());
+
+        resultSet.beforeFirst();
+
+        while (resultSet.next()){
+            System.out.println(resultSet.getString(2));
+        }
         //close connection...
         resultSet.close();
         statement.close();
@@ -48,14 +50,12 @@ public class jdbc_examples {
         Connection connection= DriverManager.getConnection(dbUrl,dbUsername,dbPassword);
         Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY); //move freely and read only
         ResultSet resultSet = statement.executeQuery("select * from departments");
-        resultSet.last();
-        System.out.println(resultSet.getRow());
-
-        resultSet.beforeFirst();
-
-        while (resultSet.next()){
-            System.out.println(resultSet.getString(2));
-        }
+        DatabaseMetaData dbMetadata = connection.getMetaData();
+        System.out.println(dbMetadata.getUserName());
+        System.out.println(dbMetadata.getDatabaseProductName());
+        System.out.println(dbMetadata.getDatabaseProductVersion());
+        System.out.println(dbMetadata.getDriverName());
+        System.out.println(dbMetadata.getDriverVersion());
         //close connection...
         resultSet.close();
         statement.close();
